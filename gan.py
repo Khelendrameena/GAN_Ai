@@ -34,7 +34,7 @@ data_customize()
 
 #Path to your image directory
 def dataset(focus=False):
-	image_dir = '/data/'
+	image_dir = 'data/'
 	dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
 	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
