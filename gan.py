@@ -33,7 +33,7 @@ def data_customize(focus=False):
 data_customize()
 
 #Path to your image directory
-def data(path,focus=flase):
+def data(path,focus=Flase):
 	image_dir = path
 	dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
 	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
