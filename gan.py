@@ -33,8 +33,8 @@ def data_customize(focus=False):
 data_customize()
 
 #Path to your image directory
-def dataset(path=path):
-	image_dir = path
+def dataset():
+	image_dir = '/data/'
 	dataset = datasets.ImageFolder(root=image_dir, transform=transform)
 	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
@@ -95,7 +95,7 @@ optimizer_g = optim.Adam(generator.parameters(), lr=learning_rate)
 optimizer_d = optim.Adam(discriminator.parameters(), lr=learning_rate)
 
 # Training the GAN
-def train(num_epochs=10,save=False,dataloader=dataset(path)):
+def train(num_epochs=10,save=False,dataloader=dataset()):
     for epoch in range(num_epochs):
 	       for i, (real_images, _) in enumerate(dataloader):
 	       	batch_size = real_images.size(0)
