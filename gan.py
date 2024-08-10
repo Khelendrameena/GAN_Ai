@@ -32,9 +32,8 @@ def data_customize(focus=False):
 
 data_customize()
 
-path = ''
 #Path to your image directory
-if path != '':
+def dataset(path):
 	image_dir = path
 	dataset = datasets.ImageFolder(root=image_dir, transform=transform)
 	dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
