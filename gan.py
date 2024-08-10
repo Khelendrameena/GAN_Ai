@@ -36,7 +36,7 @@ data_customize()
 def dataset(path):
 	image_dir = path
 	dataset = datasets.ImageFolder(root=image_dir, transform=transform)
-	dataloader = DataLoader(dataset, batch_size=batch_size, shuffle=True)
+	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # Discriminator model using CNN
 class Discriminator(nn.Module):
@@ -95,7 +95,7 @@ optimizer_g = optim.Adam(generator.parameters(), lr=learning_rate)
 optimizer_d = optim.Adam(discriminator.parameters(), lr=learning_rate)
 
 # Training the GAN
-def train(num_epochs=10,save=False):
+def train(num_epochs=10,save=False,dataloader=dataset()):
     for epoch in range(num_epochs):
 	       for i, (real_images, _) in enumerate(dataloader):
 	       	batch_size = real_images.size(0)
