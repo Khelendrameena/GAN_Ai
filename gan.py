@@ -17,14 +17,14 @@ channels = 3  # For RGB images
 def data_customize(focus=False):
 	# Data transformation and loader
 	if focus == 1:
-		transform = transforms.Compose([
+		return transforms.Compose([
 	transforms.Resize(image_size),
 	transforms.CenterCrop(image_size),
     transforms.ToTensor(),
     transforms.Normalize([0.5] * channels, [0.5] * channels)
 ])
 	else:
-			 transform = transforms.Compose([
+		return transforms.Compose([
 	transforms.Resize(image_size),
     transforms.ToTensor(),
     transforms.Normalize([0.5] * channels, [0.5] * channels)
@@ -33,9 +33,9 @@ def data_customize(focus=False):
 data_customize()
 
 #Path to your image directory
-def dataset():
+def dataset(focus=False):
 	image_dir = '/data/'
-	dataset = datasets.ImageFolder(root=image_dir, transform=transform)
+	dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
 	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # Discriminator model using CNN
