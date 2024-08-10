@@ -95,7 +95,7 @@ optimizer_g = optim.Adam(generator.parameters(), lr=learning_rate)
 optimizer_d = optim.Adam(discriminator.parameters(), lr=learning_rate)
 
 # Training the GAN
-def train(num_epochs=10,save=False,dataloader=dataset()):
+def train(num_epochs=10,save=False,dataloader=dataset(path)):
     for epoch in range(num_epochs):
 	       for i, (real_images, _) in enumerate(dataloader):
 	       	batch_size = real_images.size(0)
