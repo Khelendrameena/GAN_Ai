@@ -5,6 +5,8 @@ import torch.optim as optim
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader
 from torchvision.utils import save_image
+import h5py
+import pandas as pd
 
 # Hyperparameters
 batch_size = 64
@@ -33,14 +35,32 @@ def data_customize(focus=False):
 
 data_customize()
 
-#Path to your image directory 
-def data(path,focus=False):
-    if type(path) == str:
+def data(path, focus=False):
+    ext = os.path.splitext(path)[-1].lower()
+
+    if os.path.isdir(path):
+        # If path is a directory, load image data
+        dataset = datasets.ImageFolder(root=path, transform=data_customize(focus))
+        return DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    
+    elif ext == '.h5':
+        # If it's an .h5 file, use h5py to load the data
+        with h5py.File(path, 'r') as hdf:
+            keys = list(hdf.keys())
+            data = {key: hdf[key][:] for key in keys}
+            return data  # You might need to return a DataLoader or tensor depending on your use case
+    
+    elif ext == '.csv':
+        # If it's a CSV file, use pandas to load the data
+        data = pd.read_csv(path)
+        return data  # You might want to convert this to a tensor or DataLoader
+    
+    elif ext in ['.jpg', '.jpeg', '.png']:
         image_dir = path
         dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
         return DataLoader(dataset, batch_size=batch_size, shuffle=True)
     else:
-        return DataLoader(path, batch_size=batch_size, shuffle=True)
+        raise ValueError(f"Unsupported file format: {ext}")
         
 # Discriminator model using CNN
 class Discriminator(nn.Module):
