@@ -101,8 +101,8 @@ def train(path,num_epochs=10,save=False):
 	       for i, (real_images, _) in enumerate(dataloader):
 	       	batch_size = real_images.size(0)
 	       	# Train Discriminator
-	       	real_labels = torch.ones(batch_size, 1)
-	       	fake_labels = torch.zeros(batch_size, 1)
+	       	real_labels = torch.ones(batch_size)
+	       	fake_labels = torch.zeros(batch_size)
 	       	outputs = discriminator(real_images)
 	       	d_loss_real = criterion(outputs, real_labels)
 	       	real_score = outputs
