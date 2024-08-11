@@ -95,36 +95,47 @@ optimizer_g = optim.Adam(generator.parameters(), lr=learning_rate)
 optimizer_d = optim.Adam(discriminator.parameters(), lr=learning_rate)
 
 # Training the GAN
-def train(path,num_epochs=10,save=False):
+def train(path, num_epochs=10, save=False):
     dataloader = data(path)
     for epoch in range(num_epochs):
-	       for i, (real_images, _) in enumerate(dataloader):
-	       	batch_size = real_images.size(0)
-	       	# Train Discriminator
-	       	real_labels = torch.ones(batch_size)
-	       	fake_labels = torch.zeros(batch_size)
-	       	outputs = discriminator(real_images)
-	       	d_loss_real = criterion(outputs, real_labels)
-	       	real_score = outputs
-	       	z = torch.randn(batch_size, latent_dim)
-	       	fake_images = generator(z)
-	       	outputs = discriminator(fake_images)
-	       	d_loss_fake = criterion(outputs, fake_labels)
-	       	fake_score = outputs
-	       	d_loss = d_loss_real + d_loss_fake
-	       	optimizer_d.zero_grad()
-	       	d_loss.backward()
-	       	optimizer_d.step()
-	       	# Train Generator
-	       	z = torch.randn(batch_size, latent_dim)
-	       	fake_images = generator(z)
-	       	outputs = discriminator(fake_images)
-	       	g_loss = criterion(outputs, real_labels)
-	       	optimizer_g.zero_grad()
-	       	g_loss.backward()
-	       	optimizer_g.step()
-	       	print(f'Epoch [{epoch+1}/{num_epochs}], d_loss: {d_loss.item():.4f}, g_loss: {g_loss.item():.4f}, '
-          f'D(x): {real_score.mean().item():.4f}, D(G(z)): {fake_score.mean().item():.4f}')
-    if save == 1:
-    	torch.save(generator.state_dict(), 'generator.pth')
-    	torch.save(discriminator.state_dict(), 'discriminator.pth')
+        for i, (real_images, _) in enumerate(dataloader):
+            batch_size = real_images.size(0)
+
+            # Create real and fake labels
+            real_labels = torch.ones(batch_size, 1)
+            fake_labels = torch.zeros(batch_size, 1)
+
+            # Train Discriminator
+            outputs = discriminator(real_images)
+            outputs = outputs.view(-1, 1)  # Ensure output size is [batch_size, 1]
+            d_loss_real = criterion(outputs, real_labels)
+            real_score = outputs
+
+            z = torch.randn(batch_size, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
+            fake_images = generator(z)
+            outputs = discriminator(fake_images)
+            outputs = outputs.view(-1, 1)  # Ensure output size is [batch_size, 1]
+            d_loss_fake = criterion(outputs, fake_labels)
+            fake_score = outputs
+
+            d_loss = d_loss_real + d_loss_fake
+            optimizer_d.zero_grad()
+            d_loss.backward()
+            optimizer_d.step()
+
+            # Train Generator
+            z = torch.randn(batch_size, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
+            fake_images = generator(z)
+            outputs = discriminator(fake_images)
+            outputs = outputs.view(-1, 1)  # Ensure output size is [batch_size, 1]
+            g_loss = criterion(outputs, real_labels)
+            optimizer_g.zero_grad()
+            g_loss.backward()
+            optimizer_g.step()
+
+            print(f'Epoch [{epoch+1}/{num_epochs}], d_loss: {d_loss.item():.4f}, g_loss: {g_loss.item():.4f}, '
+                  f'D(x): {real_score.mean().item():.4f}, D(G(z)): {fake_score.mean().item():.4f}')
+
+    if save:
+        torch.save(generator.state_dict(), 'generator.pth')
+        torch.save(discriminator.state_dict(), 'discriminator.pth')
