@@ -30,13 +30,14 @@ def data_customize(focus=False):
             transforms.Normalize([0.5] * channels, [0.5] * channels)
         ])
 
+
 data_customize()
 
 #Path to your image directory
 def data(path,focus=False):
-	image_dir = path
-	dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
-	return DataLoader(dataset, batch_size=batch_size, shuffle=True)
+    image_dir = path
+    dataset = datasets.ImageFolder(root=image_dir, transform=data_customize(focus))
+    return DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
 # Discriminator model using CNN
 class Discriminator(nn.Module):
@@ -100,7 +101,6 @@ def train(path, num_epochs=10, save=False):
     for epoch in range(num_epochs):
         for i, (real_images, _) in enumerate(dataloader):
             batch_size = real_images.size(0)
-
             # Create real and fake labels
             real_labels = torch.ones(batch_size, 1)
             fake_labels = torch.zeros(batch_size, 1)
@@ -124,7 +124,7 @@ def train(path, num_epochs=10, save=False):
             optimizer_d.step()
 
             # Train Generator
-            z = torch.randn(batch_size, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
+            z = torch.randn(1, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
             fake_images = generator(z)
             outputs = discriminator(fake_images)
             outputs = outputs.view(-1, 1)  # Ensure output size is [batch_size, 1]
@@ -132,7 +132,6 @@ def train(path, num_epochs=10, save=False):
             optimizer_g.zero_grad()
             g_loss.backward()
             optimizer_g.step()
-
             print(f'Epoch [{epoch+1}/{num_epochs}], d_loss: {d_loss.item():.4f}, g_loss: {g_loss.item():.4f}, '
                   f'D(x): {real_score.mean().item():.4f}, D(G(z)): {fake_score.mean().item():.4f}')
 
