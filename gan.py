@@ -79,7 +79,8 @@ class Discriminator(nn.Module):
             nn.BatchNorm2d(8*image_size),
             nn.LeakyReLU(0.2, inplace=True),
             nn.Conv2d(8*image_size, 1, kernel_size=4, stride=1, padding=0),
-            nn.Sigmoid()
+            nn.Sigmoid(),
+            nn.Flatten()
         )
 
     def forward(self, x):
