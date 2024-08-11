@@ -44,21 +44,21 @@ def data(path,focus=False):
         
 # Discriminator model using CNN
 class Discriminator(nn.Module):
-    def __init__(self):
+    def __init__(self,image_size):
         super(Discriminator, self).__init__()
         self.model = nn.Sequential(
-            nn.Conv2d(channels, 64, kernel_size=4, stride=2, padding=1),
+            nn.Conv2d(channels, image_size, kernel_size=4, stride=2, padding=1),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(64, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(128),
+            nn.Conv2d(image_size, 2*image_size, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(2*image_size),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(128, 256, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(256),
+            nn.Conv2d(2*image_size, 4*image_size, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(4*image_size),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(256, 512, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            nn.Conv2d(4*image_size, 8*image_size, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(8*image_size),
             nn.LeakyReLU(0.2, inplace=True),
-            nn.Conv2d(512, 1, kernel_size=4, stride=1, padding=0),
+            nn.Conv2d(8*image_size, 1, kernel_size=4, stride=1, padding=0),
             nn.Sigmoid()
         )
 
@@ -67,22 +67,22 @@ class Discriminator(nn.Module):
         
 # Generator model using CNN
 class Generator(nn.Module):
-    def __init__(self):
+    def __init__(self,image_size):
         super(Generator, self).__init__()
         self.model = nn.Sequential(
-            nn.ConvTranspose2d(latent_dim, 512, kernel_size=4, stride=1, padding=0),
-            nn.BatchNorm2d(512),
+            nn.ConvTranspose2d(latent_dim, image_size*8, kernel_size=4, stride=1, padding=0),
+            nn.BatchNorm2d(image_size*8),
             nn.ReLU(True),
-            nn.ConvTranspose2d(512, 256, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(256),
+            nn.ConvTranspose2d(image_size*8, image_size*4, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(image_size*4),
             nn.ReLU(True),
-            nn.ConvTranspose2d(256, 128, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(128),
+            nn.ConvTranspose2d(image_size*4, image_size*2, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(image_size*2),
             nn.ReLU(True),
-            nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1),
-            nn.BatchNorm2d(64),
+            nn.ConvTranspose2d(image_size*2, image_size, kernel_size=4, stride=2, padding=1),
+            nn.BatchNorm2d(image_size),
             nn.ReLU(True),
-            nn.ConvTranspose2d(64, channels, kernel_size=4, stride=2, padding=1),
+            nn.ConvTranspose2d(image_size, channels, kernel_size=4, stride=2, padding=1),
             nn.Tanh()
         )
 
