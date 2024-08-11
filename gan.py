@@ -127,7 +127,7 @@ def train(path, num_epochs=10, save=False):
             optimizer_d.step()
 
             # Train Generator
-            z = torch.randn(1, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
+            z = torch.randn(batch_size, latent_dim, 1, 1)  # Note: add (1,1) to match the generator output
             fake_images = generator(z)
             outputs = discriminator(fake_images)
             outputs = outputs.view(-1, 1)  # Ensure output size is [batch_size, 1]
