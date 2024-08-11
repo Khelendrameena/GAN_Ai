@@ -90,8 +90,8 @@ class Generator(nn.Module):
         return self.model(z)
 
 # Initialize models
-generator = Generator()
-discriminator = Discriminator()
+generator = Generator(image_size)
+discriminator = Discriminator(image_size)
 
 # Loss function and optimizers
 criterion = nn.BCELoss()
