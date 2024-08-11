@@ -15,20 +15,20 @@ channels = 3  # For RGB images
 
 
 def data_customize(focus=False):
-	# Data transformation and loader
-	if focus == 1:
-		return transforms.Compose([
-	transforms.Resize(image_size),
-	transforms.CenterCrop(image_size),
-    transforms.ToTensor(),
-    transforms.Normalize([0.5] * channels, [0.5] * channels)
-])
-	else:
-		return transforms.Compose([
-	transforms.Resize(image_size),
-    transforms.ToTensor(),
-    transforms.Normalize([0.5] * channels, [0.5] * channels)
-])
+    # Data transformation and loader
+    if focus:
+        return transforms.Compose([
+            transforms.Resize(image_size),
+            transforms.CenterCrop(image_size),
+            transforms.ToTensor(),
+            transforms.Normalize([0.5] * channels, [0.5] * channels)
+        ])
+    else:
+        return transforms.Compose([
+            transforms.Resize((image_size, image_size)),
+            transforms.ToTensor(),
+            transforms.Normalize([0.5] * channels, [0.5] * channels)
+        ])
 
 data_customize()
 
