@@ -33,7 +33,7 @@ def data_customize(focus=False):
         ])
 
 
-data_customize()
+data_customize(focus=True)
 
 def data(path, focus=False):
     ext = os.path.splitext(path)[-1].lower()
