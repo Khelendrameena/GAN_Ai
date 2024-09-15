@@ -12,7 +12,7 @@ import pandas as pd
 batch_size = 64
 learning_rate = 0.0002
 latent_dim = 100
-image_size = 64
+image_size = 500
 channels = 3  # For RGB images
 
 
