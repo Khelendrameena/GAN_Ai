@@ -1,1 +1,1 @@
-<h1>video ganration</h1>
+<h1>Video Generation</h1>
