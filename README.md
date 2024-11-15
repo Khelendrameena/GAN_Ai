@@ -5,8 +5,9 @@
   Key Features
 </h3>
 <p>
-  &bull;Frame-by-Frame Generation: The GAN generates one frame at a time, reusing the previous output as input for the next frame.
- &bull;Video Generation: Combines generated frames into a complete video.
-Custom Dataset Creation: Extracts video frames and processes them for training and testing.
- &bull;Sentence-to-Image Conversion: Converts a sentence into an image representation using Word2Vec embeddings.
+&#9679;Frame-by-Frame Generation: The GAN generates one frame at a time, reusing the previous output as input for the next frame.<br>
+  
+ &#9679;Video Generation: Combines generated frames into a complete video.
+Custom Dataset Creation: Extracts video frames and processes them for training and testing.<br>
+&#9679;Sentence-to-Image Conversion: Converts a sentence into an image representation using Word2Vec embeddings.
 </p>
