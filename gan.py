@@ -273,12 +273,11 @@ def model_generate(input_image_path):
 
 
 # Function to generate images using the GAN model
-def model_generate(input_image_path):
+def model_generate(input_image):
     # Load the pre-trained model
     generator.load_state_dict(torch.load('model/generator.pth'))
     generator.eval()  # Set model to evaluation mode
 
-    input_image = Image.open(input_image_path).convert('RGB')
     input_tensor = transform(input_image).unsqueeze(0)  # Add batch dimension
 
     # Generate image
@@ -298,12 +297,12 @@ def model_generate(input_image_path):
     return output_path
 
 # Function to run the GAN model and generate multiple frames and create a video
-def model_gan(path='te_im/main.jpg',frame_count=10):
+def model_gan(sen,frame_count=10):
     item_path = os.path.join('.', 'generated')
     if not os.path.isdir(item_path):
         os.makedirs('generated')
     for i in range(0, frame_count):
-        path = model_generate(path)
+        path = model_generate(se_im(sen))
 
     # Directory where images are stored
     image_folder = 'generated'
@@ -398,7 +397,6 @@ def se_im(sentence, output_dir='te_im', image_size=(256, 256), vector_size=100):
     img = Image.fromarray(rgb_image_array, 'RGB')
 
     # Save the image
-    img_filename = 'sentence_to_image.png'
-    img.save(os.path.join(output_dir,'main.jpg'))
-
-    #print(f"Image saved as '{img_filename}' in {output_dir} folder.")
+    #img_filename = 'sentence_to_image.png'
+    #img.save(os.path.join(output_dir,'main.jpg'))
+    return img
