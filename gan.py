@@ -163,6 +163,47 @@ def extract_frames(video_path, output_dir,p):
     # Release the video capture object
     cap.release()
 
+def extract_difference_frames_8(video_path, output_dir):
+    # Create the output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Load the video
+    cap = cv2.VideoCapture(video_path)
+
+    ret, prev_frame = cap.read()
+    if not ret:
+        print("Failed to read the video.")
+        return
+
+    frame_count = 1
+
+    # Resize the first frame
+    prev_frame = cv2.resize(prev_frame, (256, 256))
+
+    while True:
+        ret, curr_frame = cap.read()
+        if not ret:
+            break
+
+        # Resize the current frame
+        curr_frame = cv2.resize(curr_frame, (256, 256))
+
+        # Calculate the absolute difference
+        diff_frame = cv2.absdiff(curr_frame, prev_frame)
+
+        # Save the difference frame
+        frame_filename = os.path.join(output_dir, f"diff_frame_{frame_count:05d}.jpg")
+        cv2.imwrite(frame_filename, diff_frame)
+
+        # Update previous frame
+        prev_frame = curr_frame
+
+        frame_count += 1
+
+    # Release the video capture object
+    cap.release()
+
 class Pix2PixDataset(Dataset):
     def __init__(self, root_dir, transform=None):
         self.root_dir = root_dir
@@ -245,8 +286,8 @@ def model_dataset(video_path,smo):
     item_path = os.path.join('.', 'data')
     if not os.path.isdir(item_path):
         os.makedirs('data')
-    extract_frames(video_path,'data/input',-smo)
-    extract_frames(video_path,'data/target',0)
+    extract_frames(video_path,'data/input',0)
+    extract_frames_8(video_path,'data/target',0)
     mot_gan('data/input',smo,0)
     mot_gan('data/target',0,smo)
 
