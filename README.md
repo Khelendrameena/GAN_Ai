@@ -5,7 +5,7 @@
   Key Features
 </h3>
 <p>
-    <h4>&#9679;Frame-by-Frame Generation:</h4> The GAN generates one frame at a time, reusing the previous output as input for the next frame.<br>
+    <h4>&#9679;Frame-by-Frame Generation:</h4> The GAN generates one frame at a time, reusing the previous output as input for the next frame. new<br>
   
    <h4>&#9679;Video Generation:</h4> Combines generated frames into a complete video.<br>
    <h4>&#9679;Custom Dataset Creation:</h4> Extracts video frames and processes them for training and testing.<br>
